@@ -28,6 +28,7 @@ TabContainer.propTypes = {
 };
 
 function TrainTable(props) {
+  console.log(props.data);
   return (
   <TabContainer style={componentStyles.root}>
         <Table style={componentStyles.table}>
@@ -64,14 +65,14 @@ function TrainTable(props) {
                         if (m.cancelled == true) {
                           return "cancelled";
                         } else {
-                          return (m.liveEstimateTime ? "liv" + m.liveEstimateTime : "sch" + m.scheduledTime);
+                          return (m.liveEstimateTime ? m.liveEstimateTime.split("T")[1].split(".")[0] : m.scheduledTime.split("T")[1].split(".")[0]);
                         }
                       }
                       if (m.stationShortCode === props.currentSearchedStation.stationShortCode && m.type === "DEPARTURE" && props.queryType === "departing") {
                         if (m.cancelled == true) {
                           return "cancelled";
                         } else {
-                          return (m.liveEstimateTime ? "liv" + m.liveEstimateTime : "sch" + m.scheduledTime);
+                          return (m.liveEstimateTime ? m.liveEstimateTime.split("T")[1].split(".")[0] : m.scheduledTime.split("T")[1].split(".")[0]);
                         }
                       }
                     }
