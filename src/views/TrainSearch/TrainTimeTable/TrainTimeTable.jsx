@@ -29,6 +29,7 @@ TabContainer.propTypes = {
 
 function TrainTable(props) {
   console.log(props.data);
+  let rowShadeTicker = true;
   return (
   <TabContainer style={componentStyles.root}>
         <Table style={componentStyles.table}>
@@ -41,9 +42,12 @@ function TrainTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
+
             {props.data.map(n => {
+              let rowShadeColor = rowShadeTicker ? "#f9f9f9" : "#ffffff";
+              rowShadeTicker = rowShadeTicker ? false : true;
               return (
-                <TableRow key={n.trainNumber}>
+                <TableRow key={n.trainNumber} style={{backgroundColor: rowShadeColor}}>
                   <TableCell cellContent={n.trainType + " " + n.trainNumber} />
                   <TableCell cellContent={
                     props.stationMetadata.map(m => {
@@ -65,14 +69,20 @@ function TrainTable(props) {
                         if (m.cancelled == true) {
                           return "cancelled";
                         } else {
-                          return (m.liveEstimateTime ? m.liveEstimateTime.split("T")[1].split(".")[0] : m.scheduledTime.split("T")[1].split(".")[0]);
+                          let tempTimeStamp = (m.liveEstimateTime ? m.liveEstimateTime : m.scheduledTime);
+                          let tempTimeStampArray = tempTimeStamp.split("T")[1].split(".")[0].split(":");
+                          tempTimeStampArray[0] = parseInt(tempTimeStampArray[0]) + 2;
+                          return (tempTimeStampArray[0] + "." + tempTimeStampArray[1]);
                         }
                       }
                       if (m.stationShortCode === props.currentSearchedStation.stationShortCode && m.type === "DEPARTURE" && props.queryType === "departing") {
                         if (m.cancelled == true) {
                           return "cancelled";
                         } else {
-                          return (m.liveEstimateTime ? m.liveEstimateTime.split("T")[1].split(".")[0] : m.scheduledTime.split("T")[1].split(".")[0]);
+                          let tempTimeStamp = (m.liveEstimateTime ? m.liveEstimateTime : m.scheduledTime);
+                          let tempTimeStampArray = tempTimeStamp.split("T")[1].split(".")[0].split(":");
+                          tempTimeStampArray[0] = parseInt(tempTimeStampArray[0]) + 2;
+                          return (tempTimeStampArray[0] + "." + tempTimeStampArray[1]);
                         }
                       }
                     }
