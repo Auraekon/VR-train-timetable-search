@@ -27,6 +27,12 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+function reduceISODateToHoursMinutes(date) {
+    let tempTimeStampArray = date.split("T")[1].split(".")[0].split(":");
+    tempTimeStampArray[0] = parseInt(tempTimeStampArray[0]) + 2;
+    return (tempTimeStampArray[0] + "." + tempTimeStampArray[1]);
+}
+
 function TrainTable(props) {
   console.log(props.data);
   let rowShadeTicker = true;
@@ -70,9 +76,7 @@ function TrainTable(props) {
                           return "cancelled";
                         } else {
                           let tempTimeStamp = (m.liveEstimateTime ? m.liveEstimateTime : m.scheduledTime);
-                          let tempTimeStampArray = tempTimeStamp.split("T")[1].split(".")[0].split(":");
-                          tempTimeStampArray[0] = parseInt(tempTimeStampArray[0]) + 2;
-                          return (tempTimeStampArray[0] + "." + tempTimeStampArray[1]);
+                          return reduceISODateToHoursMinutes(tempTimeStamp);
                         }
                       }
                       if (m.stationShortCode === props.currentSearchedStation.stationShortCode && m.type === "DEPARTURE" && props.queryType === "departing") {
@@ -80,9 +84,7 @@ function TrainTable(props) {
                           return "cancelled";
                         } else {
                           let tempTimeStamp = (m.liveEstimateTime ? m.liveEstimateTime : m.scheduledTime);
-                          let tempTimeStampArray = tempTimeStamp.split("T")[1].split(".")[0].split(":");
-                          tempTimeStampArray[0] = parseInt(tempTimeStampArray[0]) + 2;
-                          return (tempTimeStampArray[0] + "." + tempTimeStampArray[1]);
+                          return reduceISODateToHoursMinutes(tempTimeStamp);
                         }
                       }
                     }
