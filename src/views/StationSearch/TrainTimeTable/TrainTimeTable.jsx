@@ -7,8 +7,7 @@ import {
   TableBody,
   TableHead,
   TableRow,
-  Typography,
-  CircularProgress
+  Typography
 } from '@material-ui/core';
 import text from 'texts/fi';
 import TableCell from 'components/Table/TableCell';
@@ -34,7 +33,6 @@ function reduceISODateToHoursMinutes(date) {
 }
 
 function TrainTable(props) {
-  console.log(props.data);
   let rowShadeTicker = true;
   return (
   <TabContainer style={componentStyles.root}>
@@ -48,8 +46,8 @@ function TrainTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-
             {props.data.map(n => {
+
               let rowShadeColor = rowShadeTicker ? "#f9f9f9" : "#ffffff";
               rowShadeTicker = rowShadeTicker ? false : true;
               return (
@@ -105,14 +103,7 @@ export default class TrainTimeTable extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.props.trainSearchStore.getStationsMetadata();
-  }
-
   render() {
-    if (this.props.trainSearchStore.fetchStationsMetadataState !== 'done') {
-      return <CircularProgress />; // wait until the fetch is done and the store is updated
-    } else {
       const trainTimeTableData = this.props.trainSearchStore.trainTimeTableData;
       const stationMetadata = this.props.trainSearchStore.stationMetadata;
       const currentSearchedStation = this.props.trainSearchStore.currentSearchedStation;
@@ -120,10 +111,8 @@ export default class TrainTimeTable extends Component {
     return (
       <div>
       <Typography>{currentSearchedStation.stationName}</Typography>
-        
       <div>
         <Tabs>
-
           <TabList style={{color: "#4c9900"}}>
             <Tab>{text['arriving']}</Tab>
             <Tab>{text['departing']}</Tab>
@@ -141,5 +130,4 @@ export default class TrainTimeTable extends Component {
       </div>
     );
   }
-}
 }

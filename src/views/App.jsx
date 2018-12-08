@@ -5,7 +5,8 @@ import { Provider } from 'mobx-react';
 import store from '../store';
 
 import Header from 'components/Header/Header';
-import TrainSearch from './TrainSearch/TrainSearch';
+import StationSearch from './StationSearch/StationSearch';
+import RouteSearch from './RouteSearch/RouteSearch';
 
 import styles from './App.css';
 
@@ -20,7 +21,8 @@ export default class App extends Component {
           <div>
             <Header />
             <Grid container spacing={8} style={styles.contentGrid}>
-              <Route exact path="/" component={TrainSearch} />
+              <Route exact path="/" component={StationSearch} />
+              <Route exact path="/route" component={RouteSearch} />
             </Grid>
           </div>
         </Provider>

@@ -44,22 +44,23 @@ export default class AutosuggestSearchBar extends Component {
     });
   };
   
-  onSuggestionsFetchRequested = ({ value }) => {
+  onSuggestionsFetchRequested = () => {
     this.setState({
-      suggestions: this.props.trainSearchStore.getStationSuggestions(value)
+      suggestions: this.props.trainSearchStore.getStationSuggestions(this.state.value, this.props.data.searchBarProps)
     })
   };
 
   onSuggestionsClearRequested = () => {
     this.setState({
-      suggestions: []
-    });
+      suggestions: this.props.trainSearchStore.getStationSuggestions(this.state.value, this.props.data.searchBarProps)
+    })
   };
 
   render() {
+    console.log("render value", this.state.value);
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: text["searchStation"],
+      placeholder: this.props.data.label,
       value,
       onChange: this.onChange
     };

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, CircularProgress} from '@material-ui/core';
 import { observer, inject } from 'mobx-react';
 import {
   Typography,
 } from '@material-ui/core';
 import text from 'texts/fi';
 import TrainTimeTable from './TrainTimeTable/TrainTimeTable';
-import AutosuggestSearchBar from './AutosuggestSearchBar/AutosuggestSearchBar';
+import AutosuggestSearchBar from 'components/AutosuggestSearchBar/AutosuggestSearchBar';
 
 const styles = {
 autoSuggestSearchBar: {
@@ -19,6 +19,15 @@ autoSuggestSearchBar: {
 @inject('trainSearchStore')
 @observer
 export default class TrainSearch extends Component {
+  constructor() {
+    super();
+  }
+
+
+  componentDidMount() {
+    console.log("didmount");
+    this.props.trainSearchStore.getStationsMetadata();
+  }
 
   render() {
     const data = this.props.trainSearchStore.trainTimeTableData;
@@ -39,13 +48,38 @@ export default class TrainSearch extends Component {
     ]
   };
 
+  const stationSearchBarProps = {
+    label: text["fromStation"],
+    target: "fromStation"
+  };
+
+  const searchProps = {
+    label: text["searchStation"],
+    searchBarProps: [
+      {
+        trainQueryFunctionName: "fetchTrainInformationByStation",
+        target: "arriving"
+      },
+      {
+        trainQueryFunctionName: "fetchTrainInformationByStation",
+        target: "departing"
+      },
+    ],
+  }
+
+
+  if (this.props.trainSearchStore.fetchStationsMetadataState !== 'done') {
+    return <CircularProgress />; // wait until the fetch is done and the store is updated
+  } else {
     return (
       <Grid item xs={12}>
       <div style={styles.autoSuggestSearchBar}>
       <Typography>
         <b>{text["searchWithStationName"]}</b>
       </Typography>
-      <AutosuggestSearchBar/>
+      <AutosuggestSearchBar
+      data={searchProps}
+      />
       </div>
         <TrainTimeTable
           data={data}
@@ -53,5 +87,6 @@ export default class TrainSearch extends Component {
         />
       </Grid>
     );
+    }
   }
 }
